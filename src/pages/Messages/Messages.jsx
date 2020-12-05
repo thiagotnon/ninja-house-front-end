@@ -5,7 +5,7 @@ import "../../styles/dwellers.css";
 import { Link } from "react-router-dom";
 import { formatPhoneNumber } from "../../helpers/functions";
 import Page from "../../components/Page";
-import { FaUserPlus } from "react-icons/fa";
+import { FaEdit, FaTimes, FaUserPlus } from "react-icons/fa";
 
 const Messages = () => {
   const [messages, setMessages] = React.useState([]);
@@ -52,7 +52,35 @@ const Messages = () => {
           </>
         ) : (
           <>
-            <Row></Row>
+            <Row>
+              {messages.map((message) => (
+                <Col md={4} key={message.id}>
+                  <Card>
+                    <Card.Body>
+                      <div className="d-flex align-items-center justify-content-between">
+                        <Card.Title>{message.title}</Card.Title>
+                        <ButtonGroup>
+                          <Link
+                            className="btn btn-outline-secondary"
+                            to={`/mensagem/${message.id}/editar`}
+                          >
+                            <FaEdit size={20} />
+                          </Link>
+                          <Button
+                            variant="outline-danger"
+                            onClick={() => handleClick(message.id)}
+                          >
+                            <FaTimes size={20} />
+                          </Button>
+                        </ButtonGroup>
+                      </div>
+                      <hr />
+                      <Card.Text>{message.message}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
           </>
         )}
       </Page>

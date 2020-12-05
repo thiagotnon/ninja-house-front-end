@@ -14,9 +14,19 @@ import Select from "../../components/forms/Select";
 const MessageForm = (props) => {
   const [units, setUnits] = React.useState([]);
   const [show, setShow] = React.useState(false);
+  const [dados, setDados] = React.useState({});
 
   const { register, handleSubmit, errors } = useForm();
   const reference = { register, validator, errors };
+
+  React.useEffect(() => {
+    const id = props.match.params.id;
+    if (id) {
+      MessageService.get(id).then((results) => {
+        setDados(results.data);
+      });
+    }
+  });
 
   function onSubmit(data) {
     const { title, message, apartment_id } = data;
@@ -33,9 +43,8 @@ const MessageForm = (props) => {
     } else {
       MessageService.create(data)
         .then((results) => {
-          console.log(results);
           alert("Mensagem cadastrada com sucesso!");
-          props.history.push("/moradores");
+          props.history.push("/mensagens");
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -81,6 +90,7 @@ const MessageForm = (props) => {
                     reference={reference}
                     size={12}
                     onChange={handleChange}
+                    valor={dados.warns}
                   />
 
                   <Form.Group
@@ -114,12 +124,14 @@ const MessageForm = (props) => {
                     name="title"
                     reference={reference}
                     size={12}
+                    valor={dados.title}
                   />
                   <Textarea
                     label="Mensagem"
                     name="message"
                     reference={reference}
                     rows={6}
+                    valor={dados.message}
                   />
                 </Form.Row>
               </Col>

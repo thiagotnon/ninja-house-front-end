@@ -76,7 +76,7 @@ const Home = () => {
                   <Card className="card-counter bg-primary text-white">
                     <FaBuilding />
                     <span className="count-numbers font-weight-bold">
-                      {units}
+                      {units && <>{units}</>}
                     </span>
                     <span className="count-name">Unidades</span>
                   </Card>
@@ -87,7 +87,7 @@ const Home = () => {
                   <Card className="card-counter bg-warning text-white">
                     <FaCalendarCheck />
                     <span className="count-numbers font-weight-bold">
-                      {reservations}
+                      {reservations && <>{reservations}</>}
                     </span>
                     <span className="count-name">Reservas</span>
                   </Card>
@@ -98,7 +98,7 @@ const Home = () => {
                   <Card className="card-counter bg-info text-white">
                     <FaUserAlt />
                     <span className="count-numbers font-weight-bold">
-                      {dwallers}
+                      {dwallers && <>{dwallers}</>}
                     </span>
                     <span className="count-name">Moradores</span>
                   </Card>
@@ -109,7 +109,7 @@ const Home = () => {
                   <Card className="card-counter bg-dark text-white">
                     <FaShippingFast />
                     <span className="count-numbers font-weight-bold">
-                      {orders}
+                      {orders && <>{orders}</>}
                     </span>
                     <span className="count-name">Encomendas</span>
                   </Card>

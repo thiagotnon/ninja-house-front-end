@@ -38,7 +38,7 @@ const UserLogin = (props) => {
             md={6}
             className="d-flex align-items-center justify-content-center"
           >
-            <Form onSubmit={handleSubmit(onSubmit)} className="w-50">
+            <Form onSubmit={handleSubmit(onSubmit)} className="w-75">
               <Card className="border-0 shadow-sm p-4">
                 <Card.Body>
                   <Form.Row>
@@ -82,6 +82,7 @@ const UserLogin = (props) => {
                     <Input
                       label="Senha"
                       name="password"
+                      type="password"
                       reference={reference}
                       size={12}
                     />
