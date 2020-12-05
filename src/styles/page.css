@@ -1,0 +1,9 @@
+.sidebar {
+  position: absolute;
+  overflow: auto;
+  height: 100%;
+  top: 0;
+}
+.custom-footer {
+  bottom: 0;
+}

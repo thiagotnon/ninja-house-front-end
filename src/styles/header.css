@@ -1,0 +1,12 @@
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: transparent;
+  color: black;
+}
+
+.navbar .dropdown:hover > .dropdown-menu {
+  display: block;
+}
+.navbar {
+  z-index: 1;
+}

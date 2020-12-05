@@ -1,0 +1,38 @@
+.leisure-list .card img {
+  object-fit: cover;
+  width: 100%;
+  height: 400px;
+}
+.card-img-overlay {
+  top: auto !important;
+  backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.carousel,
+.slide,
+.carousel-inner {
+  border-radius: 20px;
+}
+
+.carousel-inner img {
+  object-fit: cover;
+  width: 100%;
+  height: 500px;
+}
+
+.carousel,
+.slide,
+.carousel-inner {
+  border-radius: 20px;
+}
+
+.carousel-inner img {
+  object-fit: cover;
+  width: 100%;
+  height: 500px;
+}
+
+.button-box {
+  margin-top: 32px;
+}

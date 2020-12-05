@@ -1,0 +1,15 @@
+.nav-link {
+  cursor: pointer;
+  transition: all 0.5s;
+}
+.nav-link:hover {
+  background: #007bff;
+  border-radius: 6px;
+}
+.nav-link:hover,
+.nav-link:hover svg {
+  color: #fff;
+}
+.nav-link svg {
+  color: #007bff;
+}
