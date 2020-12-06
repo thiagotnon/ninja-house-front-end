@@ -2,23 +2,23 @@ import { api } from "./api";
 
 class MessageService {
   getAll() {
-    return api.get("avisos");
+    return api.get("mensagens");
   }
 
   get(id) {
-    return api.get(`avisos/${id}`);
+    return api.get(`mensagens/${id}`);
   }
 
   create(data) {
-    return api.post("avisos", data);
+    return api.post("mensagens", data);
   }
 
   update(id, data) {
-    return api.put(`avisos/${id}`, data);
+    return api.put(`mensagens/${id}`, data);
   }
 
   delete(id) {
-    return api.delete(`avisos/${id}`);
+    return api.delete(`mensagens/${id}`);
   }
 }
 

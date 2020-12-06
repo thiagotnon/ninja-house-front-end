@@ -59,7 +59,9 @@ const LeizureSpaces = (props) => {
             </h4>
             <Link
               to={`${leisureSpace.id}/reserva`}
-              className="btn btn-outline-primary btn-lg "
+              className={`btn btn-outline-primary btn-lg ${
+                leisureSpace.availability ? "" : "disabled"
+              }`}
             >
               <FaCalendarCheck className="mr-2" />
               Reservar

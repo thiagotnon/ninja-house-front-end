@@ -4,8 +4,16 @@ import LeisureService from "../../services/LeisureService";
 import "../../styles/leisure.css";
 import { Link } from "react-router-dom";
 import Page from "../../components/Page";
-import { FaUserPlus, FaUserTimes } from "react-icons/fa";
+import {
+  FaRegCalendarCheck,
+  FaRegEdit,
+  FaRegEye,
+  FaTrashAlt,
+  FaUserPlus,
+  FaUserTimes,
+} from "react-icons/fa";
 import { MoneyFormat } from "../../helpers/functions";
+import swal from "sweetalert";
 const LeizureSpaces = () => {
   const [leisureSpaces, setLeisureSpaces] = React.useState([]);
 
@@ -15,17 +23,28 @@ const LeizureSpaces = () => {
     });
   }, []);
   function handleClick(id) {
-    if (window.confirm("Deseja realmente excluir o o espaço de lazer?")) {
-      LeisureService.delete(id)
-        .then(() => {
-          LeisureService.getAll().then((results) => {
-            setLeisureSpaces(results.data.data);
+    swal({
+      title: "Você realmente deseja remover o espaço de lazer?",
+      text: "Não será possível recupera-lo após a remoção.",
+      icon: "warning",
+      buttons: ["Cancelar", true],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        LeisureService.delete(id)
+          .then(() => {
+            LeisureService.getAll().then((results) => {
+              setLeisureSpaces(results.data.data);
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
           });
-        })
-        .catch((error) => {
-          console.log(error.response.data);
+        swal("Poof! O espaço de lazer foi removido!", {
+          icon: "success",
         });
-    }
+      }
+    });
   }
 
   return (
@@ -37,7 +56,7 @@ const LeizureSpaces = () => {
             to="/espaco-de-lazer/novo"
             className="btn btn-outline-secondary d-flex align-items-center justify-content-between"
           >
-            <FaUserPlus size={20} className="mr-2" />
+            <FaRegCalendarCheck size={20} className="mr-2" />
             Novo espaço de lazer
           </Link>
         }
@@ -52,11 +71,11 @@ const LeizureSpaces = () => {
           <>
             <Row className="leisure-list">
               {leisureSpaces.map((leisure, i) => (
-                <Col className="col-lg-3 col-md-6 col-sm-12" key={i}>
+                <Col className="col-lg-4 col-md-6 col-sm-12" key={i}>
                   <Card className="text-white mb-4">
                     <Card.Img src={leisure.images[0].url} alt={leisure.id} />
 
-                    <Card.ImgOverlay>
+                    <Card.Body className="position-absolute">
                       <Card.Title className="font-weight-bold">
                         {leisure.name}
                       </Card.Title>
@@ -64,22 +83,29 @@ const LeizureSpaces = () => {
                         Capacidade: {leisure.capacity} pessoas
                       </Card.Text>
                       <Card.Text>Taxa: {MoneyFormat(leisure.rate)}</Card.Text>
-                      <hr />
+                    </Card.Body>
+                    <Card.Footer>
                       <ButtonGroup className="btn-block">
                         <Link
-                          className="btn btn-outline-light"
+                          className="btn btn-outline-secondary"
                           to={`espaco-de-lazer/${leisure.id}`}
                         >
-                          Ver detalhes
+                          <FaRegEye size={20} /> Ver detalhes
+                        </Link>
+                        <Link
+                          className="btn btn-outline-secondary"
+                          to={`espaco-de-lazer/${leisure.id}/editar`}
+                        >
+                          <FaRegEdit size={20} /> Editar
                         </Link>
                         <Button
-                          variant="outline-light"
+                          variant="outline-danger"
                           onClick={() => handleClick(leisure.id)}
                         >
-                          <FaUserTimes size={20} /> Remover espaço
+                          <FaTrashAlt size={20} /> Remover espaço
                         </Button>
                       </ButtonGroup>
-                    </Card.ImgOverlay>
+                    </Card.Footer>
                   </Card>
                 </Col>
               ))}

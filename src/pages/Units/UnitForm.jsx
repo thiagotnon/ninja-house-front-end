@@ -7,6 +7,7 @@ import validator from "../../validator/UnitValidator";
 import { useForm } from "react-hook-form";
 import { FaSave } from "react-icons/fa";
 import UnitsService from "../../services/UnitsService";
+import swal from "sweetalert";
 
 const UnitForm = (props) => {
   const { register, handleSubmit, errors } = useForm();
@@ -29,8 +30,18 @@ const UnitForm = (props) => {
 
     resultado
       .then((results) => {
-        alert("Registrado com sucesso");
-        props.history.push("/unidades");
+        if (results.data.error) {
+          swal({
+            icon: "error",
+            text: results.data.error,
+          });
+        } else {
+          swal({
+            icon: "success",
+            text: "Registrado com sucesso!",
+          });
+          props.history.push("/unidades");
+        }
       })
       .catch((error) => {
         console.log(error.response.data);

@@ -12,6 +12,7 @@ import "../../styles/users.css";
 import UsersService from "../../services/UsersService";
 import { formatPhoneNumber } from "../../helpers/functions";
 import { Link } from "react-router-dom";
+
 const Users = () => {
   const [users, setUsers] = React.useState([]);
 
@@ -27,6 +28,7 @@ const Users = () => {
         .then(() => {
           UsersService.getAll().then((results) => {
             setUsers(results.data.data);
+            localStorage.removeItem("ninja-house-token");
           });
         })
         .catch((error) => {
@@ -36,18 +38,7 @@ const Users = () => {
   }
   return (
     <>
-      <Page
-        title="Usuários"
-        custom_content={
-          <Link
-            to="/usuario/novo"
-            className="btn btn-outline-secondary d-flex align-items-center justify-content-between"
-          >
-            <FaUserPlus size={20} className="mr-2" />
-            Adicionar Usuário
-          </Link>
-        }
-      >
+      <Page title="Usuários">
         {users.length === 0 ? (
           <>
             <Alert variant="secondary">

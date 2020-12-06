@@ -11,6 +11,7 @@ import {
   Row,
 } from "react-bootstrap";
 import UnitsService from "../../services/UnitsService";
+import MessageService from "../../services/MessageService";
 import "../../styles/units.css";
 import { Link } from "react-router-dom";
 import { formatPhoneNumber, padLeadingZeros } from "../../helpers/functions";
@@ -31,14 +32,12 @@ const SingleUnit = (props) => {
       setUnit(results.data);
 
       setOrders(results.data.orders);
-      if (results.data.messages === undefined) {
-        setMessages({});
-      } else {
-        setMessages(results.data.messages.pop());
-      }
     });
     UnitsService.getDwellers(id).then((results) => {
       setDwellers(results.data);
+    });
+    MessageService.getAll().then((results) => {
+      setMessages(results.data.data.pop());
     });
   }, [props]);
 
@@ -57,7 +56,7 @@ const SingleUnit = (props) => {
           )
         }
       >
-        <Container>
+        <Container fluid>
           <Row>
             <Col md={8} className="dwellers-list">
               <div className="d-flex aling-items-center justify-content-between">
@@ -135,13 +134,8 @@ const SingleUnit = (props) => {
       {messages && (
         <>
           <CustomModal
-            title="Avisos"
-            children={
-              <>
-                <h6>{messages.title}</h6>
-                {messages.message}
-              </>
-            }
+            title={messages.title}
+            children={<>{messages.message}</>}
             show={modalShow}
             onHide={() => setModalShow(false)}
           />

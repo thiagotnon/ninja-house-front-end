@@ -30,18 +30,7 @@ const Sidebar = (props) => {
             Unidades
           </Nav.Item>
         </LinkContainer>
-        <LinkContainer to="/hospedes">
-          <Nav.Item className="nav-link">
-            <FaUserCheck className="mr-1" />
-            Hóspedes
-          </Nav.Item>
-        </LinkContainer>
-        <LinkContainer to="/moradores">
-          <Nav.Item className="nav-link">
-            <FaUserFriends className="mr-1" />
-            Moradores
-          </Nav.Item>
-        </LinkContainer>
+
         <LinkContainer to="/mensagens">
           <Nav.Item className="nav-link">
             <FaEnvelope className="mr-1" />
@@ -60,6 +49,19 @@ const Sidebar = (props) => {
             Espaços de lazer
           </Nav.Item>
         </LinkContainer>
+        <LinkContainer to="/moradores">
+          <Nav.Item className="nav-link">
+            <FaUserFriends className="mr-1" />
+            Moradores
+          </Nav.Item>
+        </LinkContainer>
+        <LinkContainer to="/hospedes">
+          <Nav.Item className="nav-link">
+            <FaUserCheck className="mr-1" />
+            Hóspedes
+          </Nav.Item>
+        </LinkContainer>
+
         <LinkContainer to="/funcionarios">
           <Nav.Item className="nav-link">
             <FaUsers className="mr-1" />

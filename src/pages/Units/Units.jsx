@@ -14,10 +14,12 @@ import "../../styles/units.css";
 import { Link } from "react-router-dom";
 import { padLeadingZeros } from "../../helpers/functions";
 import Page from "../../components/Page";
-import { FaSearch, FaUserEdit, FaUserPlus, FaUserTimes } from "react-icons/fa";
+import { FaBuilding, FaRegEdit, FaSearch, FaTrashAlt } from "react-icons/fa";
+import swal from "sweetalert";
 
 const Units = (props) => {
   const [units, setUnits] = React.useState([]);
+  const [verify, setVerify] = React.useState({});
 
   React.useEffect(() => {
     UnitsService.getAll().then((results) => {
@@ -36,20 +38,35 @@ const Units = (props) => {
       });
     }
   };
+
   function handleClick(id) {
-    if (window.confirm("Deseja realmente excluir o registro?")) {
-      UnitsService.delete(id)
-        .then(() => {
-          UnitsService.getAll().then((results) => {
-            setUnits(results.data.data);
-            props.history.push("/unidades");
+    swal({
+      title: "Você realmente deseja remover essa unidade?",
+      text: "Não será possível recupera-la após a remoção.",
+      icon: "warning",
+      buttons: ["Cancelar", true],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        UnitsService.delete(id)
+          .then(() => {
+            UnitsService.getAll().then((results) => {
+              setUnits(results.data.data);
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
           });
-        })
-        .catch((error) => {
-          console.log(error.response.data);
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
         });
-    }
+      }
+    });
+
+    props.history.push("/unidades");
   }
+  console.log(verify);
+
   return (
     <>
       <Page
@@ -74,7 +91,7 @@ const Units = (props) => {
                 to="/unidade/nova"
                 className="btn btn-outline-secondary d-flex align-items-center justify-content-between"
               >
-                <FaUserPlus size={20} className="mr-2" />
+                <FaBuilding size={20} className="mr-2" />
                 Nova unidade
               </Link>
             </div>
@@ -112,23 +129,23 @@ const Units = (props) => {
                           </h5>
                         </span>
                       </Card.Body>
-                      <ButtonGroup>
-                        <Link
-                          className="btn btn-outline-secondary"
-                          to={`/unidade/${unit.id}/editar`}
-                        >
-                          <FaUserEdit size={20} />
-                        </Link>
-
-                        <Button
-                          variant="outline-danger"
-                          onClick={() => handleClick(unit.id)}
-                        >
-                          <FaUserTimes size={20} />
-                        </Button>
-                      </ButtonGroup>
                     </Card>
                   </Link>
+                  <ButtonGroup className="btn-block">
+                    <Link
+                      className="btn btn-outline-secondary"
+                      to={`/unidade/${unit.id}/editar`}
+                    >
+                      <FaRegEdit size={20} /> Editar
+                    </Link>
+
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => handleClick(unit.id)}
+                    >
+                      <FaTrashAlt size={20} /> Remover
+                    </Button>
+                  </ButtonGroup>
                 </Col>
               ))}
             </>

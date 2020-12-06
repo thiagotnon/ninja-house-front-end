@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { formatPhoneNumber } from "../../helpers/functions";
 import Page from "../../components/Page";
 import { FaEdit, FaTimes, FaUserPlus } from "react-icons/fa";
+import swal from "sweetalert";
 
 const Messages = () => {
   const [messages, setMessages] = React.useState([]);
@@ -17,17 +18,28 @@ const Messages = () => {
   }, []);
 
   function handleClick(id) {
-    if (window.confirm("Deseja realmente excluir o registro?")) {
-      MessageService.delete(id)
-        .then(() => {
-          MessageService.getAll().then((results) => {
-            setMessages(results.data.data);
+    swal({
+      title: "Você realmente deseja remover essa mensagem?",
+      text: "Não será possível recupera-la após a remoção.",
+      icon: "warning",
+      buttons: ["Cancelar", true],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        MessageService.delete(id)
+          .then(() => {
+            MessageService.getAll().then((results) => {
+              setMessages(results.data.data);
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
           });
-        })
-        .catch((error) => {
-          console.log(error.response.data);
+        swal("Poof! Mensagem removida com sucesso.", {
+          icon: "success",
         });
-    }
+      }
+    });
   }
 
   return (

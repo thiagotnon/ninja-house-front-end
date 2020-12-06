@@ -142,21 +142,17 @@ const Home = () => {
             ) : (
               <>
                 <Row>
-                  {messages
-                    .filter((message) => message.apartment_id == null)
-                    .map((message) => (
-                      <Col md={12} key={message.id}>
-                        <Card className="mb-2">
-                          <Card.Body>
-                            <h6 className="font-weight-bold">
-                              {message.title}
-                            </h6>
-                            <hr />
-                            <small>{message.message}</small>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    ))}
+                  {messages.map((message) => (
+                    <Col md={12} key={message.id}>
+                      <Card className="mb-2">
+                        <Card.Body>
+                          <h6 className="font-weight-bold">{message.title}</h6>
+                          <hr />
+                          <small>{message.message}</small>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
                 </Row>
               </>
             )}

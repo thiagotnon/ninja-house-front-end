@@ -5,7 +5,14 @@ import "../../styles/dwellers.css";
 import { Link } from "react-router-dom";
 import { padLeadingZeros } from "../../helpers/functions";
 import Page from "../../components/Page";
-import { FaCheck, FaRegEdit, FaTrashAlt, FaUserPlus } from "react-icons/fa";
+import {
+  FaCheck,
+  FaRegEdit,
+  FaShippingFast,
+  FaTrashAlt,
+  FaUserPlus,
+} from "react-icons/fa";
+import swal from "sweetalert";
 
 const Orders = () => {
   const [orders, setOrders] = React.useState([]);
@@ -17,17 +24,28 @@ const Orders = () => {
   }, []);
 
   function handleClick(id) {
-    if (window.confirm("Deseja realmente excluir o registro?")) {
-      OrderService.delete(id)
-        .then(() => {
-          OrderService.getAll().then((results) => {
-            setOrders(results.data.data);
+    swal({
+      title: "Você realmente deseja remover essa encomenda?",
+      text: "Não será possível recupera-la após a remoção.",
+      icon: "warning",
+      buttons: ["Cancelar", true],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        OrderService.delete(id)
+          .then(() => {
+            OrderService.getAll().then((results) => {
+              setOrders(results.data.data);
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
           });
-        })
-        .catch((error) => {
-          console.log(error.response.data);
+        swal("Poof! Encomenda removida com sucesso.", {
+          icon: "success",
         });
-    }
+      }
+    });
   }
 
   return (
@@ -39,8 +57,7 @@ const Orders = () => {
             to="/encomenda/nova"
             className="btn btn-outline-secondary d-flex align-items-center justify-content-between"
           >
-            <FaUserPlus size={20} className="mr-2" />
-            Nova encomenda
+            <FaShippingFast size={20} className="mr-1" /> Nova encomenda
           </Link>
         }
       >
@@ -118,12 +135,12 @@ const Orders = () => {
                     </p>
                     <hr />
                     <div className="d-flex align-items-center justify-content-between btn-group">
-                      <Button variant="outline-success">
-                        <FaCheck /> Entregar
-                      </Button>
-                      <Button variant="outline-secondary">
+                      <Link
+                        to={`encomenda/${order.id}/editar`}
+                        className="btn btn-outline-secondary"
+                      >
                         <FaRegEdit /> Editar
-                      </Button>
+                      </Link>
                       <Button
                         variant="outline-danger"
                         onClick={() => handleClick(order.id)}

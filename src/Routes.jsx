@@ -46,42 +46,64 @@ export default () => {
       <BrowserRouter>
         <Header />
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/unidade/:id" component={SingleUnit} />
-          <Route exact path="/unidade/:id/editar" component={UnitForm} />
-          <Route exact path="/unidade/nova" component={UnitForm} />
-          <Route exact path="/unidades" component={Units} />
-          <Route exact path="/moradores" component={Dwellers} />
-          <Route exact path="/usuarios" component={Users} />
-          <Route exact path="/usuario/novo" component={UserForm} />
-          <Route exact path="/usuario/:id/editar" component={UserForm} />
-          <Route exact path="/morador/novo" component={DwellerForm} />
-          <Route exact path="/mensagem/:id/editar" component={MessageForm} />
-          <Route exact path="/mensagem/nova" component={MessageForm} />
-          <Route exact path="/mensagens" component={Messages} />
-          <Route exact path="/encomendas" component={Orders} />
-          <Route exact path="/encomenda/nova" component={OrderForm} />
-          <Route exact path="/hospedes" component={Guests} />
-          <Route exact path="/hospede/novo" component={GuestForm} />
-          <Route
+          <PrivateRoute exact path="/" component={Home} />
+          <PrivateRoute exact path="/unidades" component={Units} />
+          <PrivateRoute exact path="/unidade/nova" component={UnitForm} />
+          <PrivateRoute exact path="/unidade/:id" component={SingleUnit} />
+          <PrivateRoute exact path="/unidade/:id/editar" component={UnitForm} />
+          <PrivateRoute exact path="/moradores" component={Dwellers} />
+          <PrivateRoute exact path="/usuarios" component={Users} />
+          <PrivateRoute exact path="/usuario/novo" component={UserForm} />
+          <PrivateRoute exact path="/usuario/:id/editar" component={UserForm} />
+          <PrivateRoute exact path="/morador/novo" component={DwellerForm} />
+          <PrivateRoute
+            exact
+            path="/mensagem/:id/editar"
+            component={MessageForm}
+          />
+          <PrivateRoute exact path="/mensagem/nova" component={MessageForm} />
+          <PrivateRoute exact path="/mensagens" component={Messages} />
+          <PrivateRoute exact path="/encomendas" component={Orders} />
+          <PrivateRoute exact path="/encomenda/nova" component={OrderForm} />
+          <PrivateRoute
+            exact
+            path="/encomenda/:id/editar"
+            component={OrderForm}
+          />
+          <PrivateRoute exact path="/hospedes" component={Guests} />
+          <PrivateRoute exact path="/hospede/novo" component={GuestForm} />
+          <PrivateRoute
             exact
             path="/espaco-de-lazer/:id/reserva"
             component={LeisureSpaceReservationForm}
           />
-          <Route
+          <PrivateRoute
             exact
             path="/espaco-de-lazer/novo"
             component={LeisureSpaceForm}
           />
-          <Route exact path="/espacos-de-lazer" component={LeisureSpaces} />
-          <Route
+          <PrivateRoute
+            exact
+            path="/espaco-de-lazer/:id/editar"
+            component={LeisureSpaceForm}
+          />
+          <PrivateRoute
+            exact
+            path="/espacos-de-lazer"
+            component={LeisureSpaces}
+          />
+          <PrivateRoute
             exact
             path="/espaco-de-lazer/:id"
             component={SingleLeisureSpace}
           />
-          <Route exact path="/funcionarios" component={Employees} />
-          <Route exact path="/funcionario/novo" component={EmployeeForm} />
-          <Route exact path="*" component={Erro404} />
+          <PrivateRoute exact path="/funcionarios" component={Employees} />
+          <PrivateRoute
+            exact
+            path="/funcionario/novo"
+            component={EmployeeForm}
+          />
+          <PrivateRoute exact path="*" component={Erro404} />
         </Switch>
 
         <Route exact path="/cadastrar" component={Register} />

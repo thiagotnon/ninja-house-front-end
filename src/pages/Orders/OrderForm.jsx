@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Page from "../../components/Page";
 import "../../styles/users.css";
-import UsersService from "../../services/UsersService";
 import Input from "../../components/forms/Input";
 import validator from "../../validator/OrderValidator";
 import { useForm } from "react-hook-form";
@@ -12,20 +11,37 @@ import Select from "../../components/forms/Select";
 import OrderService from "../../services/OrderService";
 import OrderTypeService from "../../services/OrderTypeService";
 import Textarea from "../../components/forms/Textarea";
+import swal from "sweetalert";
 
 const OrderForm = (props) => {
   const [units, setUnits] = React.useState([]);
-  const [users, setUsers] = React.useState([]);
   const [orderTypes, setOrderTypes] = React.useState([]);
+  const [dados, setDados] = React.useState({});
 
   const { register, handleSubmit, errors } = useForm();
   const reference = { register, validator, errors };
 
+  React.useEffect(() => {
+    const id = props.match.params.id;
+
+    if (id) {
+      OrderService.get(id).then((results) => {
+        setDados(results.data);
+      });
+    }
+  }, [props]);
+
   function onSubmit(data) {
-    OrderService.create(data)
+    const resultado = dados.id
+      ? OrderService.update(dados.id, data)
+      : OrderService.create(data);
+
+    resultado
       .then((results) => {
-        console.log(results);
-        alert("Encomenda cadastrada com sucesso!");
+        swal({
+          icon: "success",
+          text: "Registrado com sucesso",
+        });
         props.history.push("/encomendas");
       })
       .catch((error) => {
@@ -36,10 +52,6 @@ const OrderForm = (props) => {
   React.useEffect(() => {
     UnitsService.getAll().then((results) => {
       setUnits(results.data.data);
-      console.log(results.data.data);
-    });
-    UsersService.getAll().then((results) => {
-      setUsers(results.data.data);
     });
     OrderTypeService.getAll().then((results) => {
       setOrderTypes(results.data.data);
@@ -59,18 +71,21 @@ const OrderForm = (props) => {
                     name="tracking"
                     reference={reference}
                     size={3}
+                    valor={dados.tracking}
                   />
                   <Input
                     label="Destinatário"
                     name="recipient"
                     reference={reference}
                     size={6}
+                    valor={dados.recipient}
                   />
                   <Input
                     label="Transportadora"
                     name="sender"
                     reference={reference}
                     size={3}
+                    valor={dados.sender}
                   />
                   <Form.Group as={Col} md={3} controlId="apartment_id">
                     <Form.Label>
@@ -109,8 +124,8 @@ const OrderForm = (props) => {
                     descricao="description"
                     chave="status"
                     data={[
-                      { id: 1, status: true, description: "Sim" },
-                      { id: 2, status: false, description: "Não" },
+                      { id: 1, status: 1, description: "Sim" },
+                      { id: 2, status: 0, description: "Não" },
                     ]}
                     size={3}
                   />
@@ -121,8 +136,8 @@ const OrderForm = (props) => {
                     descricao="description"
                     chave="status"
                     data={[
-                      { id: 1, status: true, description: "Entregue" },
-                      { id: 2, status: false, description: "Pendente" },
+                      { id: 1, status: 1, description: "Entregue" },
+                      { id: 2, status: 0, description: "Pendente" },
                     ]}
                     size={3}
                   />
@@ -133,6 +148,7 @@ const OrderForm = (props) => {
                     reference={reference}
                     size={12}
                     rows={6}
+                    valor={dados.message}
                   />
                 </Form.Row>
               </Col>
