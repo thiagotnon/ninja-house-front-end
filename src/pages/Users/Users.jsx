@@ -1,19 +1,13 @@
 import React from "react";
-import { Alert, Button, ButtonGroup, Card, Col, Row } from "react-bootstrap";
-import {
-  FaMobileAlt,
-  FaRegEnvelope,
-  FaUserEdit,
-  FaUserPlus,
-  FaUserTimes,
-} from "react-icons/fa";
+import { Alert, Button, Card, Col, Row } from "react-bootstrap";
+import { FaMobileAlt, FaRegEnvelope, FaUserTimes } from "react-icons/fa";
 import Page from "../../components/Page";
 import "../../styles/users.css";
 import UsersService from "../../services/UsersService";
 import { formatPhoneNumber } from "../../helpers/functions";
-import { Link } from "react-router-dom";
+import swal from "sweetalert";
 
-const Users = () => {
+const Users = (props) => {
   const [users, setUsers] = React.useState([]);
 
   React.useEffect(() => {
@@ -23,18 +17,34 @@ const Users = () => {
   }, []);
 
   function handleClick(id) {
-    if (window.confirm("Deseja realmente excluir o registro?")) {
-      UsersService.delete(id)
-        .then(() => {
-          UsersService.getAll().then((results) => {
-            setUsers(results.data.data);
-            localStorage.removeItem("ninja-house-token");
+    swal({
+      title: "Você realmente deseja remover o usuário?",
+      text: "Não será possível recupera-lo após a remoção.",
+      icon: "warning",
+      buttons: ["Cancelar", true],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        UsersService.delete(id)
+          .then(() => {
+            UsersService.getAll().then((results) => {
+              setUsers(results.data.data);
+            });
+          })
+          .catch((error) => {
+            swal({
+              icon: "error",
+              text: error.data.error,
+            });
+            console.log(error.response.data);
           });
-        })
-        .catch((error) => {
-          console.log(error.response.data);
+        swal("Poof! O usuário foi removido com sucesso!", {
+          icon: "success",
         });
-    }
+      }
+    });
+
+    props.history.push("/usuarios");
   }
   return (
     <>
@@ -46,7 +56,7 @@ const Users = () => {
             </Alert>
           </>
         ) : (
-          <Row>
+          <Row className="pb-5">
             <>
               {users.map((user) => (
                 <Col md={4} key={user.id} className="mb-4">
@@ -67,20 +77,13 @@ const Users = () => {
                             <FaRegEnvelope /> {user.email}
                           </small>
                         </div>
-                        <ButtonGroup>
-                          <Link
-                            className="btn btn-outline-secondary"
-                            to={`/usuario/${user.id}/editar`}
-                          >
-                            <FaUserEdit size={20} />
-                          </Link>
-                          <Button
-                            variant="outline-danger"
-                            onClick={() => handleClick(user.id)}
-                          >
-                            <FaUserTimes size={20} />
-                          </Button>
-                        </ButtonGroup>
+
+                        <Button
+                          variant="outline-danger"
+                          onClick={() => handleClick(user.id)}
+                        >
+                          <FaUserTimes size={20} />
+                        </Button>
                       </div>
                     </Card.Body>
                   </Card>

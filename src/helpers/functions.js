@@ -24,3 +24,16 @@ export function padLeadingZeros(num, size) {
   while (s.length < size) s = "0" + s;
   return s;
 }
+
+export function dateFormat(date) {
+  const finalDate = new Date(`${date} 03:00`).toLocaleDateString("pt-BR");
+  return finalDate;
+}
+
+export function formatCpf(cpf) {
+  cpf = cpf.replace(/\D/g, "");
+  cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+  cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+  cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  return cpf;
+}

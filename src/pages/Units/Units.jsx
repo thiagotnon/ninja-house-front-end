@@ -19,7 +19,6 @@ import swal from "sweetalert";
 
 const Units = (props) => {
   const [units, setUnits] = React.useState([]);
-  const [verify, setVerify] = React.useState({});
 
   React.useEffect(() => {
     UnitsService.getAll().then((results) => {
@@ -57,7 +56,7 @@ const Units = (props) => {
           .catch((error) => {
             console.log(error.response.data);
           });
-        swal("Poof! Your imaginary file has been deleted!", {
+        swal("Poof! A unidade foi excluída com sucesso!", {
           icon: "success",
         });
       }
@@ -65,7 +64,6 @@ const Units = (props) => {
 
     props.history.push("/unidades");
   }
-  console.log(verify);
 
   return (
     <>

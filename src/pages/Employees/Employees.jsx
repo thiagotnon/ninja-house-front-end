@@ -12,7 +12,8 @@ import "../../styles/employee.css";
 import EmployeeService from "../../services/EmployeeService";
 import { formatPhoneNumber } from "../../helpers/functions";
 import { Link } from "react-router-dom";
-const Employees = () => {
+import swal from "sweetalert";
+const Employees = (props) => {
   const [employees, setEmployees] = React.useState([]);
 
   React.useEffect(() => {
@@ -22,17 +23,30 @@ const Employees = () => {
   }, []);
 
   function handleClick(id) {
-    if (window.confirm("Deseja realmente excluir o registro?")) {
-      EmployeeService.delete(id)
-        .then(() => {
-          EmployeeService.getAll().then((results) => {
-            setEmployees(results.data.data);
+    swal({
+      title: "Você realmente deseja remover esse(a) funcionário(a)?",
+      text: "Não será possível recupera-lo(a) após a remoção.",
+      icon: "warning",
+      buttons: ["Cancelar", true],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        EmployeeService.delete(id)
+          .then(() => {
+            EmployeeService.getAll().then((results) => {
+              setEmployees(results.data.data);
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
           });
-        })
-        .catch((error) => {
-          console.log(error.response.data);
+        swal("Poof! A funcionário(a) foi excluído(a) com sucesso!", {
+          icon: "success",
         });
-    }
+      }
+    });
+
+    props.history.push("/funcionarios");
   }
   return (
     <>
@@ -76,9 +90,12 @@ const Employees = () => {
                           </small>
                         </div>
                         <ButtonGroup>
-                          <Button variant="outline-secondary">
+                          <Link
+                            to={`funcionario/${user.id}/editar`}
+                            className="btn btn-outline-secondary"
+                          >
                             <FaUserEdit size={20} />
-                          </Button>
+                          </Link>
                           <Button
                             variant="outline-danger"
                             onClick={() => handleClick(user.id)}

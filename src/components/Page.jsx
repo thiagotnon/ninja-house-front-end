@@ -18,8 +18,13 @@ const Page = (props) => {
           <Col md={10} className="scroll h-100">
             <div className="box-header mt-3">
               <div className="content-box-header d-flex align-items-center justify-content-between">
-                <h3 className="mb-0">{props.title}</h3>
-                {props.custom_content && <>{props.custom_content}</>}
+                <h3 className="font-weight-bold mb-0">{props.title}</h3>
+
+                {props.custom_content && (
+                  <>
+                    <span className="">{props.custom_content}</span>
+                  </>
+                )}
               </div>
               <hr />
               {props.children}

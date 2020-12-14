@@ -12,6 +12,7 @@ import {
   FaUserPlus,
   FaUserTimes,
 } from "react-icons/fa";
+import swal from "sweetalert";
 
 function Dwellers() {
   const [dwellers, setDwellers] = React.useState([]);
@@ -23,17 +24,28 @@ function Dwellers() {
   }, []);
 
   function handleClick(id) {
-    if (window.confirm("Deseja realmente excluir o registro?")) {
-      DwellerService.delete(id)
-        .then(() => {
-          DwellerService.getAll().then((results) => {
-            setDwellers(results.data.data);
+    swal({
+      title: "Você realmente deseja remover esse morador?",
+      text: "Não será possível recupera-lo após a remoção.",
+      icon: "warning",
+      buttons: ["Cancelar", true],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        DwellerService.delete(id)
+          .then(() => {
+            DwellerService.getAll().then((results) => {
+              setDwellers(results.data.data);
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
           });
-        })
-        .catch((error) => {
-          console.log(error.response.data);
+        swal("Poof! O morador foi excluído com sucesso!", {
+          icon: "success",
         });
-    }
+      }
+    });
   }
 
   return (
@@ -80,9 +92,12 @@ function Dwellers() {
                           </small>
                         </div>
                         <ButtonGroup>
-                          <Button variant="outline-secondary">
+                          <Link
+                            to={`morador/${user.id}/editar`}
+                            className="btn btn-outline-secondary"
+                          >
                             <FaUserEdit size={20} />
-                          </Button>
+                          </Link>
                           <Button
                             variant="outline-danger"
                             onClick={() => handleClick(user.id)}

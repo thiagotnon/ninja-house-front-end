@@ -1,3 +1,4 @@
+import { unMask } from "remask";
 import { api } from "./api";
 
 class GuestService {
@@ -10,6 +11,8 @@ class GuestService {
   }
 
   create(data) {
+    data = { ...data, cpf: unMask(data.cpf) };
+
     return api.post("hospedes", data);
   }
 

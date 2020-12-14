@@ -1,17 +1,11 @@
 import React from "react";
-import { Alert, Button, Card, Col, Row } from "react-bootstrap";
+import { Alert, Button, ButtonGroup, Card, Col, Row } from "react-bootstrap";
 import OrderService from "../../services/OrderService";
 import "../../styles/dwellers.css";
 import { Link } from "react-router-dom";
 import { padLeadingZeros } from "../../helpers/functions";
 import Page from "../../components/Page";
-import {
-  FaCheck,
-  FaRegEdit,
-  FaShippingFast,
-  FaTrashAlt,
-  FaUserPlus,
-} from "react-icons/fa";
+import { FaBox, FaRegEdit, FaShippingFast, FaTrashAlt } from "react-icons/fa";
 import swal from "sweetalert";
 
 const Orders = () => {
@@ -53,12 +47,20 @@ const Orders = () => {
       <Page
         title="Encomendas"
         custom_content={
-          <Link
-            to="/encomenda/nova"
-            className="btn btn-outline-secondary d-flex align-items-center justify-content-between"
-          >
-            <FaShippingFast size={20} className="mr-1" /> Nova encomenda
-          </Link>
+          <ButtonGroup>
+            <Link
+              to="/tipo-de-encomenda"
+              className="btn btn-outline-secondary d-flex align-items-center justify-content-between"
+            >
+              <FaBox size={20} className="mr-1" /> Adicionar tipo de encomenda
+            </Link>
+            <Link
+              to="/encomenda/nova"
+              className="btn btn-outline-secondary d-flex align-items-center justify-content-between"
+            >
+              <FaShippingFast size={20} className="mr-1" /> Nova encomenda
+            </Link>
+          </ButtonGroup>
         }
       >
         {orders.length === 0 ? (

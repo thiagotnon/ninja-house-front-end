@@ -20,6 +20,8 @@ import { Link } from "react-router-dom";
 import Page from "../components/Page";
 
 const Home = () => {
+  const userName = localStorage.getItem("username");
+
   const [units, setUnits] = React.useState([]);
   const [reservations, setReservations] = React.useState([]);
   const [dwallers, setDwellers] = React.useState([]);
@@ -67,7 +69,7 @@ const Home = () => {
   }, []);
   return (
     <>
-      <Page title="Painel de controle">
+      <Page title={`Bem-vindo, ${userName}!`}>
         <Row className="pt-3">
           <Col md={12}>
             <Row>

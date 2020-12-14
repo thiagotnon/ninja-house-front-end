@@ -12,6 +12,7 @@ import Messages from "./pages/Messages/Messages";
 import MessageForm from "./pages/Messages/MessageForm";
 import Orders from "./pages/Orders/Orders";
 import OrderForm from "./pages/Orders/OrderForm";
+import OrderTypes from "./pages/Orders/OrderTypesForm";
 import UnitForm from "./pages/Units/UnitForm";
 import Guests from "./pages/Guests/Guests";
 import GuestForm from "./pages/Guests/GuestForm";
@@ -21,6 +22,8 @@ import Employees from "./pages/Employees/Employees";
 import EmployeeForm from "./pages/Employees/EmployeeForm";
 import LeisureSpaceForm from "./pages/LeisureSpaces/LeisureSpaceForm";
 import LeisureSpaceReservationForm from "./pages/LeisureSpaces/LeisureSpaceReservationForm";
+import Reservations from "./pages/Reservations/Reservations";
+import SingleReservation from "./pages/Reservations/SingleReservation";
 import Erro404 from "./pages/404/404";
 import Login from "./pages/Users/Login";
 import { isAuthenticated } from "./services/auth";
@@ -55,6 +58,11 @@ export default () => {
           <PrivateRoute exact path="/usuarios" component={Users} />
           <PrivateRoute exact path="/usuario/novo" component={UserForm} />
           <PrivateRoute exact path="/usuario/:id/editar" component={UserForm} />
+          <PrivateRoute
+            exact
+            path="/morador/:id/editar"
+            component={DwellerForm}
+          />
           <PrivateRoute exact path="/morador/novo" component={DwellerForm} />
           <PrivateRoute
             exact
@@ -63,6 +71,11 @@ export default () => {
           />
           <PrivateRoute exact path="/mensagem/nova" component={MessageForm} />
           <PrivateRoute exact path="/mensagens" component={Messages} />
+          <PrivateRoute
+            exact
+            path="/tipo-de-encomenda"
+            component={OrderTypes}
+          />
           <PrivateRoute exact path="/encomendas" component={Orders} />
           <PrivateRoute exact path="/encomenda/nova" component={OrderForm} />
           <PrivateRoute
@@ -70,8 +83,19 @@ export default () => {
             path="/encomenda/:id/editar"
             component={OrderForm}
           />
+          <PrivateRoute
+            exact
+            path="/hospede/:id/editar"
+            component={GuestForm}
+          />
           <PrivateRoute exact path="/hospedes" component={Guests} />
           <PrivateRoute exact path="/hospede/novo" component={GuestForm} />
+          <PrivateRoute
+            exact
+            path="/reserva/:id"
+            component={SingleReservation}
+          />
+          <PrivateRoute exact path="/reservas" component={Reservations} />
           <PrivateRoute
             exact
             path="/espaco-de-lazer/:id/reserva"
@@ -96,6 +120,11 @@ export default () => {
             exact
             path="/espaco-de-lazer/:id"
             component={SingleLeisureSpace}
+          />
+          <PrivateRoute
+            exact
+            path="/funcionario/:id/editar"
+            component={EmployeeForm}
           />
           <PrivateRoute exact path="/funcionarios" component={Employees} />
           <PrivateRoute

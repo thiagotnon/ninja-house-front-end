@@ -9,20 +9,43 @@ import { FaSave } from "react-icons/fa";
 import UnitsService from "../../services/UnitsService";
 import Select from "../../components/forms/Select";
 import DwellerService from "../../services/DwellerService";
+import swal from "sweetalert";
 
 const DwellerForm = (props) => {
   const [units, setUnits] = React.useState([]);
   const [users, setUsers] = React.useState([]);
+  const [dados, setDados] = React.useState([]);
 
   const { register, handleSubmit, errors } = useForm();
   const reference = { register, validator, errors };
+  React.useEffect(() => {
+    const id = props.match.params.id;
 
+    if (id) {
+      DwellerService.get(id).then((results) => {
+        setDados(results.data);
+      });
+    }
+  }, [props]);
   function onSubmit(data) {
-    DwellerService.create(data)
+    const resultado = dados.id
+      ? DwellerService.update(dados.id, data)
+      : DwellerService.create(data);
+
+    resultado
       .then((results) => {
-        console.log(results);
-        alert("Morador cadastrado com sucesso!");
-        props.history.push("/moradores");
+        if (results.data.error) {
+          swal({
+            icon: "error",
+            text: results.data.error,
+          });
+        } else {
+          swal({
+            icon: "success",
+            text: "Registrado com sucesso!",
+          });
+          props.history.push("/moradores");
+        }
       })
       .catch((error) => {
         console.log(error.response.data);

@@ -8,9 +8,11 @@ import { useForm } from "react-hook-form";
 import { FaSave } from "react-icons/fa";
 import Select from "../../components/forms/Select";
 import UsersService from "../../services/UsersService";
+import swal from "sweetalert";
 
 const EmployeeForm = (props) => {
   const [users, setUsers] = React.useState([]);
+  const [dados, setDados] = React.useState([]);
 
   const { register, handleSubmit, errors } = useForm();
   const reference = { register, validator, errors };
@@ -18,16 +20,37 @@ const EmployeeForm = (props) => {
   React.useEffect(() => {
     UsersService.getAll().then((results) => {
       setUsers(results.data.data);
-      console.log(results.data.data);
     });
   }, []);
 
+  React.useEffect(() => {
+    const id = props.match.params.id;
+
+    if (id) {
+      EmployeeService.get(id).then((results) => {
+        setDados(results.data);
+      });
+    }
+  }, [props]);
   function onSubmit(data) {
-    EmployeeService.create(data)
+    const resultado = dados.id
+      ? EmployeeService.update(dados.id, data)
+      : EmployeeService.create(data);
+
+    resultado
       .then((results) => {
-        console.log(results);
-        alert("Funcionário cadastrado com sucesso!");
-        props.history.push("/funcionarios");
+        if (results.data.error) {
+          swal({
+            icon: "error",
+            text: results.data.error,
+          });
+        } else {
+          swal({
+            icon: "success",
+            text: "Registrado com sucesso!",
+          });
+          props.history.push("/funcionarios");
+        }
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -37,6 +60,7 @@ const EmployeeForm = (props) => {
     { id: 1, period: "Diurno" },
     { id: 2, period: "Noturno" },
   ];
+  console.log(dados);
   return (
     <>
       <Page title="Novo Funcionário">
@@ -52,6 +76,7 @@ const EmployeeForm = (props) => {
                     reference={reference}
                     descricao="username"
                     size={12}
+                    valor={dados.user_id}
                   />
                   <Select
                     label="Período"
@@ -60,18 +85,21 @@ const EmployeeForm = (props) => {
                     reference={reference}
                     descricao="period"
                     size={12}
+                    valor={dados.period}
                   />
                   <Input
                     label="Horário de entrada"
                     name="entry_time"
                     type="time"
                     reference={reference}
+                    valor={dados.entry_time}
                   />
                   <Input
                     label="Horário de saída"
                     name="departure_time"
                     type="time"
                     reference={reference}
+                    valor={dados.departure_time}
                   />
                 </Form.Row>
               </Col>

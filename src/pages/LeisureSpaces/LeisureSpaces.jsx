@@ -5,12 +5,11 @@ import "../../styles/leisure.css";
 import { Link } from "react-router-dom";
 import Page from "../../components/Page";
 import {
+  FaCalendarDay,
   FaRegCalendarCheck,
   FaRegEdit,
   FaRegEye,
   FaTrashAlt,
-  FaUserPlus,
-  FaUserTimes,
 } from "react-icons/fa";
 import { MoneyFormat } from "../../helpers/functions";
 import swal from "sweetalert";
@@ -52,13 +51,21 @@ const LeizureSpaces = () => {
       <Page
         title="Espaços de lazer"
         custom_content={
-          <Link
-            to="/espaco-de-lazer/novo"
-            className="btn btn-outline-secondary d-flex align-items-center justify-content-between"
-          >
-            <FaRegCalendarCheck size={20} className="mr-2" />
-            Novo espaço de lazer
-          </Link>
+          <>
+            <ButtonGroup>
+              <Link
+                to="/espaco-de-lazer/novo"
+                className="btn btn-outline-secondary d-flex align-items-end justify-content-between"
+              >
+                <FaRegCalendarCheck size={20} className="mr-2" />
+                Novo espaço de lazer
+              </Link>
+              <Link to="/reservas" className="btn btn-outline-secondary ">
+                <FaCalendarDay size={20} className="mr-2" />
+                Ver todas as reservas
+              </Link>
+            </ButtonGroup>
+          </>
         }
       >
         {leisureSpaces.length === 0 ? (

@@ -1,6 +1,11 @@
 import React from "react";
 import { Button, Image, Nav, Navbar } from "react-bootstrap";
-import { FaRegIdCard, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaRegIdCard,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaUserAlt,
+} from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link, withRouter } from "react-router-dom";
 import swal from "sweetalert";
@@ -10,6 +15,7 @@ import { isAuthenticated, logout } from "../services/auth";
 import "../styles/header.css";
 
 const Header = (props) => {
+  const userName = localStorage.getItem("username");
   const logoutAction = () => {
     swal({
       title: "Deseja mesmo sair?",
@@ -20,6 +26,7 @@ const Header = (props) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        localStorage.removeItem("username");
         logout();
         props.history.push("/login");
       }
@@ -38,7 +45,9 @@ const Header = (props) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
               <Button variant="link" disabled className="text-dark">
-                Olá, =
+                <strong>
+                  <FaUserAlt /> {userName}
+                </strong>
               </Button>
               <Button variant="outline-primary" onClick={logoutAction}>
                 <FaSignOutAlt /> Sair

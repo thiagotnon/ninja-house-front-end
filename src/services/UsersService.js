@@ -15,11 +15,6 @@ class UsersService {
     return api.post("usuarios", data);
   }
 
-  update(id, data) {
-    data = { ...data, cpf: unMask(data.cpf) };
-    return api.put(`usuarios/${id}`, data);
-  }
-
   delete(id) {
     return api.delete(`usuarios/${id}`);
   }

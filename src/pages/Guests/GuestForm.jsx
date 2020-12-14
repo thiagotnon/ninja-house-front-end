@@ -6,20 +6,44 @@ import validator from "../../validator/OrderValidator";
 import { useForm } from "react-hook-form";
 import { FaSave } from "react-icons/fa";
 import UnitsService from "../../services/UnitsService";
-import OrderService from "../../services/OrderService";
+import GuestService from "../../services/GuestService";
+import swal from "sweetalert";
 
 const GuestForm = (props) => {
   const [units, setUnits] = React.useState([]);
+  const [dados, setDados] = React.useState({});
 
   const { register, handleSubmit, errors } = useForm();
   const reference = { register, validator, errors };
 
+  React.useEffect(() => {
+    const id = props.match.params.id;
+
+    if (id) {
+      GuestService.get(id).then((results) => {
+        setDados(results.data);
+      });
+    }
+  }, [props]);
   function onSubmit(data) {
-    OrderService.create(data)
+    const resultado = dados.id
+      ? GuestService.update(dados.id, data)
+      : GuestService.create(data);
+
+    resultado
       .then((results) => {
-        console.log(results);
-        alert("Encomenda cadastrada com sucesso!");
-        props.history.push("/encomendas");
+        if (results.data.error) {
+          swal({
+            icon: "error",
+            text: results.data.error,
+          });
+        } else {
+          swal({
+            icon: "success",
+            text: "Registrado com sucesso!",
+          });
+          props.history.push("/hospedes");
+        }
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -31,7 +55,6 @@ const GuestForm = (props) => {
       setUnits(results.data.data);
     });
   }, []);
-
   return (
     <>
       <Page title="Novo hospede">
@@ -45,14 +68,22 @@ const GuestForm = (props) => {
                     name="name"
                     reference={reference}
                     size={11}
+                    valor={dados.name}
                   />
-                  <Input label="RG" name="rg" reference={reference} size={3} />
+                  <Input
+                    label="RG"
+                    name="rg"
+                    reference={reference}
+                    size={3}
+                    valor={dados.rg}
+                  />
                   <Input
                     label="CPF"
                     name="cpf"
                     reference={reference}
                     size={4}
                     mask="999.999.999-99"
+                    valor={dados.cpf}
                   />
 
                   <Form.Group as={Col} md={4} controlId="apartment_id">
@@ -82,6 +113,7 @@ const GuestForm = (props) => {
                     type="date"
                     reference={reference}
                     size={4}
+                    valor={dados.entry_date}
                   />
                   <Input
                     label="Data de saída"
@@ -89,6 +121,7 @@ const GuestForm = (props) => {
                     type="date"
                     reference={reference}
                     size={4}
+                    valor={dados.departure_date}
                   />
                 </Form.Row>
               </Col>

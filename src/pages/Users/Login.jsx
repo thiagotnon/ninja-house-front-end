@@ -38,6 +38,7 @@ const UserLogin = (props) => {
             text: "Login efetuado  com sucesso!",
           });
           login(results.data.token);
+          localStorage.setItem("username", results.data.username);
           props.history.push("/");
         }
       })

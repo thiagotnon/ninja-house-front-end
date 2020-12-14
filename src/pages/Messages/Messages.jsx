@@ -3,9 +3,8 @@ import { Alert, Button, ButtonGroup, Card, Col, Row } from "react-bootstrap";
 import MessageService from "../../services/MessageService";
 import "../../styles/dwellers.css";
 import { Link } from "react-router-dom";
-import { formatPhoneNumber } from "../../helpers/functions";
 import Page from "../../components/Page";
-import { FaEdit, FaTimes, FaUserPlus } from "react-icons/fa";
+import { FaEdit, FaRegEnvelope, FaTimes } from "react-icons/fa";
 import swal from "sweetalert";
 
 const Messages = () => {
@@ -51,7 +50,7 @@ const Messages = () => {
             to="/mensagem/nova"
             className="btn btn-outline-secondary d-flex align-items-center justify-content-between"
           >
-            <FaUserPlus size={20} className="mr-2" />
+            <FaRegEnvelope size={20} className="mr-2" />
             Nova mensagem
           </Link>
         }
@@ -66,11 +65,13 @@ const Messages = () => {
           <>
             <Row>
               {messages.map((message) => (
-                <Col md={4} key={message.id}>
+                <Col md={6} key={message.id}>
                   <Card>
                     <Card.Body>
                       <div className="d-flex align-items-center justify-content-between">
-                        <Card.Title>{message.title}</Card.Title>
+                        <Card.Title className="mb-0 font-weight-bold">
+                          {message.title}
+                        </Card.Title>
                         <ButtonGroup>
                           <Link
                             className="btn btn-outline-secondary"

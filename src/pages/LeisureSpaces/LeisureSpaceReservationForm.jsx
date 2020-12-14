@@ -18,6 +18,7 @@ import LeisureService from "../../services/LeisureService";
 import UnitsService from "../../services/UnitsService";
 import ReservationService from "../../services/ReservationService";
 import ReservationGuestService from "../../services/ReservationGuestService";
+import swal from "sweetalert";
 
 const LeizureSpaceReservationForm = (props) => {
   const [units, setUnits] = React.useState([]);
@@ -41,13 +42,23 @@ const LeizureSpaceReservationForm = (props) => {
   function onSubmit(data) {
     ReservationService.create(data)
       .then((results) => {
-        console.log(results.data.id);
         addGuests(
           guestList.map((item) => {
-            console.log({ ...item, reservation_id: results.data.id });
             return { ...item, reservation_id: results.data.id };
           })
         );
+        if (results.data.error) {
+          swal({
+            icon: "error",
+            text: results.data.error,
+          });
+        } else {
+          swal({
+            icon: "success",
+            text: "Registrado com sucesso!",
+          });
+          props.history.push("/reservas");
+        }
       })
       .catch((errors) => {
         console.log(errors);

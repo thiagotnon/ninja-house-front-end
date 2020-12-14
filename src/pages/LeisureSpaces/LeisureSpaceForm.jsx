@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, Container, Form, Image, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Page from "../../components/Page";
 import "../../styles/users.css";
 import Input from "../../components/forms/Input";

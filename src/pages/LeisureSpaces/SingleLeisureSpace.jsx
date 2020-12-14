@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Carousel, Col, Jumbotron, Row, Spinner } from "react-bootstrap";
+import { Carousel, Col, Row } from "react-bootstrap";
 import LeisureService from "../../services/LeisureService";
 import "../../styles/leisure.css";
 import Page from "../../components/Page";
